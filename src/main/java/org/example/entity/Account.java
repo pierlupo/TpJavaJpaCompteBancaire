@@ -14,21 +14,22 @@ public class Account {
     private String libelle;
     @Column(name = "iban", nullable = false, length = 27)
     private String IBAN;
-    @Column(name="solde", precision=10, scale=2)
-    private Double Solde;
+    @Column(name="amount", precision=10, scale=2)
+    private Double amount;
     @ManyToOne
     @JoinColumn(name = "id_bank")
     private Bank bank;
     @ManyToMany(mappedBy = "accounts")
-    private List<Customer> customers = new ArrayList<>();;
-
+    private List<Customer> customers;
+    @ManyToMany(mappedBy = "accounts")
+    private List<Operation> operations;
     public Account() {
     }
 
-    public Account(String libelle, String IBAN, Double solde) {
+    public Account(String libelle, String IBAN, Double amount) {
         this.libelle = libelle;
         this.IBAN = IBAN;
-        Solde = solde;
+        this.amount = amount;
     }
 
 
@@ -56,12 +57,12 @@ public class Account {
         this.IBAN = IBAN;
     }
 
-    public Double getSolde() {
-        return Solde;
+    public Double getAmount() {
+        return amount;
     }
 
-    public void setSolde(Double solde) {
-        Solde = solde;
+    public void setAmount(Double amount) {
+        amount = amount;
     }
 
     public Bank getBank() {
@@ -86,7 +87,7 @@ public class Account {
                 "id=" + id +
                 ", libelle='" + libelle + '\'' +
                 ", IBAN='" + IBAN + '\'' +
-                ", Solde=" + Solde +
+                ", amount=" + amount +
                 ", bank=" + bank +
                 ", customers=" + customers +
                 '}';

@@ -9,6 +9,7 @@ import org.example.entity.Customer;
 import org.example.impl.AccountDAOImpl;
 import org.example.impl.BankDAOImpl;
 import org.example.impl.CustomerDAOImpl;
+import org.example.impl.OperationDAOImpl;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -31,6 +32,7 @@ public class IHM {
     private static AccountDAOImpl accountDAO;
     private static CustomerDAOImpl customerDAO;
     private static BankDAOImpl bankDAO;
+    private static OperationDAOImpl operationDAO;
     public void start() {
         entityManagerFactory = Persistence.createEntityManagerFactory("exo_jpa");
         customerDAO = new CustomerDAOImpl(entityManagerFactory);
@@ -46,9 +48,9 @@ public class IHM {
                 case "2":
                     accountMenu();
                     break;
-//                case "3":
-//                    bankMenu();
-//                    break;
+                case "3":
+                    bankMenu();
+                    break;
                 case "0":
                     System.out.println("See you later, bye bye!");
                     entityManagerFactory.close();
@@ -199,9 +201,9 @@ public class IHM {
         String libelle = scanner.nextLine();
         System.out.println("Enter the IBAN of the account :");
         String IBAN = scanner.nextLine();
-        System.out.println("Enter the sold : ");
-        Double sold = scanner.nextDouble();
-        Account account = new Account(libelle,IBAN,sold);
+        System.out.println("Enter the amount : ");
+        Double amount = scanner.nextDouble();
+        Account account = new Account(libelle,IBAN,amount);
         if(accountDAO.addAccount(account)){
             System.out.println("Customer successfully added !");
         }else {
@@ -220,7 +222,7 @@ public class IHM {
             System.out.println("### List of Accounts ###");
             for (Account account : accounts) {
                 System.out.println("############");
-                System.out.println(account.getId() + ". " + account.getIBAN()+", "+ account.getSolde());
+                System.out.println(account.getId() + ". " + account.getIBAN()+", "+ account.getAmount());
                 System.out.println("############");
             }
         }
