@@ -4,6 +4,7 @@ import org.example.dao.AccountDAO;
 import org.example.dao.BankDAO;
 import org.example.dao.CustomerDAO;
 import org.example.entity.Account;
+import org.example.entity.Bank;
 import org.example.entity.Customer;
 import org.example.impl.AccountDAOImpl;
 import org.example.impl.BankDAOImpl;
@@ -238,6 +239,86 @@ public class IHM {
             System.out.println("Error while deleting account");
         }
     }
+    // Crud Bank
+    private void bankMenu() {
+        do {
+            menuBank();
+            choice = scanner.nextLine();
+            switch (choice) {
+                case "1":
+                    addBank();
+                    break;
+                case "2":
+                    getAllBanks();
+                    break;
+                case "3":
+                    deleteBank();
+                    break;
+                case "4":
+                    break;
+                default:
+                    System.out.println("Invalid choice");
+            }
+        } while (!choice.equals("4"));
+    }
+    //  Sous Menu Bank
+    private void menuBank() {
+        System.out.println("-------------------------------");
+        System.out.println(" TP Compte Bancaire JPA");
+        System.out.println("-------------------------------");
+        System.out.println("***************************************");
+        System.out.println("Choose an option :");
+        System.out.println("***************************************");
+        System.out.println("1 - Add a bank");
+        System.out.println("2 - List of all banks");
+        System.out.println("3 - Delete a bank");
+        System.out.println("4 - Go Back");
+        System.out.println("***************************************");
+    }
+
+    // 1 - Add a bank
+    private void addBank() {
+        System.out.println("Enter the address of the bank :");
+        String address = scanner.nextLine();
+        Bank bank = new Bank(address);
+        if(bankDAO.addBank(bank)){
+            System.out.println("Customer successfully added !");
+        }else {
+            System.out.println("Error while trying to add a customer ");
+        }
+
+    }
+
+    // 2 - List of all accounts
+    private void getAllBanks() {
+        System.out.println("List of all banks :");
+        List<Bank> banks = bankDAO.getAllBanks();
+        if (banks.isEmpty()) {
+            System.out.println("No banks Found.");
+        } else {
+            System.out.println("### List of banks ###");
+            for (Bank bank : banks) {
+                System.out.println("############");
+                System.out.println(bank.getId() + ". " + bank.getAddress());
+                System.out.println("############");
+            }
+        }
+    }
+
+    // 3 - Delete a Bank
+    private void deleteBank() {
+        System.out.println("List of banks :");
+        getAllBanks();
+        System.out.println("Enter the id of the bank to delete");
+        Long bankId = scanner.nextLong();
+        scanner.nextLine();
+        if (bankDAO.deleteBank(bankId)) {
+            System.out.println("Bank successfully deleted");
+        } else {
+            System.out.println("Error while deleting bank");
+        }
+    }
+
 
 
 }

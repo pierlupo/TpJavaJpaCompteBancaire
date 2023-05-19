@@ -14,6 +14,10 @@ public class Bank {
     public Bank() {
     }
 
+    public Bank(String address) {
+        this.address = address;
+    }
+
     public Long getId() {
         return id;
     }
