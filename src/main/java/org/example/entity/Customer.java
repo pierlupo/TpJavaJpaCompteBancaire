@@ -17,7 +17,8 @@ public class Customer {
     @Column(name="first_name")
     private String firstName;
     private LocalDate birthDate;
-    @OneToMany(mappedBy = "customer",cascade = CascadeType.ALL,orphanRemoval = true)
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(name = "customer_account", joinColumns = @JoinColumn(name = "id_customer"), inverseJoinColumns = @JoinColumn(name = "id_account"))
     private List<Account> accounts;
 
     public Customer() {

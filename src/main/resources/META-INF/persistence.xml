@@ -13,7 +13,7 @@
         <class>org.example.entity.Customer</class>
         <properties>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
-            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/bankaccount" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/banque_bdd" />
             <property name="javax.persistence.jdbc.user" value="root" />
             <property name="javax.persistence.jdbc.password" value="Guerrier@777" />
             <property name="javax.persistence.schema-generation.database.action" value="create"/>

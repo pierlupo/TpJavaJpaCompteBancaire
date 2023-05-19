@@ -1,6 +1,7 @@
 package org.example.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 @Entity
 @Table(name="account")
@@ -18,8 +19,8 @@ public class Account {
     @ManyToOne
     @JoinColumn(name = "id_bank")
     private Bank bank;
-    @ManyToMany(mappedBy = "account")
-    private List<Customer> customers;
+    @ManyToMany(mappedBy = "accounts")
+    private List<Customer> customers = new ArrayList<>();;
 
     public Account() {
     }

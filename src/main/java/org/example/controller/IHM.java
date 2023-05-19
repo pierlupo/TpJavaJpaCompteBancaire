@@ -48,6 +48,12 @@ public class IHM {
 //                case "3":
 //                    bankMenu();
 //                    break;
+                case "0":
+                    System.out.println("See you later, bye bye!");
+                    entityManagerFactory.close();
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please try again.");
             }
         }while (!choice.equals("0"));
     }
@@ -129,7 +135,7 @@ public class IHM {
             System.out.println("### List of Users ###");
             for (Customer customer : customers) {
                 System.out.println("############");
-                System.out.println(customer.getId() + ". " + customer.getLastName()+", "+ customer.getLastName());
+                System.out.println(customer.getId() + ". " + customer.getLastName()+", "+ customer.getFirstName()+", "+customer.getBirthDate());
                 System.out.println("############");
             }
         }
@@ -181,7 +187,7 @@ public class IHM {
         System.out.println("***************************************");
         System.out.println("1 - Add an account");
         System.out.println("2 - List of all accounts");
-        System.out.println("3 - Delete an event");
+        System.out.println("3 - Delete an account");
         System.out.println("4 - Go Back");
         System.out.println("***************************************");
     }
