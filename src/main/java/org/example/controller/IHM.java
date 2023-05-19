@@ -10,6 +10,7 @@ import org.example.impl.BankDAOImpl;
 import org.example.impl.CustomerDAOImpl;
 
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import java.sql.Connection;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -30,6 +31,10 @@ public class IHM {
     private static CustomerDAOImpl customerDAO;
     private static BankDAOImpl bankDAO;
     public void start() {
+        entityManagerFactory = Persistence.createEntityManagerFactory("exo_jpa");
+        customerDAO = new CustomerDAOImpl(entityManagerFactory);
+        accountDAO = new AccountDAOImpl(entityManagerFactory);
+        bankDAO = new BankDAOImpl(entityManagerFactory);
         do {
             menu();
             choice = scanner.nextLine();
@@ -79,7 +84,7 @@ public class IHM {
                 default:
                     System.out.println("Invalid choice");
             }
-        } while (!customerChoice.equals("5"));
+        } while (!customerChoice.equals("4"));
     }
 
     //  Sous Menu Customer
