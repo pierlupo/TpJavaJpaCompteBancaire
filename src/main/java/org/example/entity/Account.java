@@ -19,15 +19,20 @@ public class Account {
     @ManyToOne
     @JoinColumn(name = "id_bank")
     private Bank bank;
-    @ManyToMany(mappedBy = "accounts")
+    @ManyToMany(mappedBy = "accounts",cascade = CascadeType.ALL)
     private List<Customer> customers;
 
-    @ManyToMany(mappedBy = "accounts")
+    @ManyToMany(mappedBy = "accounts",cascade = CascadeType.ALL)
     private List<Operation> operations;
+    @Column(name="total_amount")
     private double totalAmount;
     public Account() {
     }
-
+    public Account(String libelle, String IBAN, Double amount) {
+        this.libelle = libelle;
+        this.IBAN = IBAN;
+        this.amount = amount;
+    }
     public List<Operation> getOperations() {
         return operations;
     }
@@ -43,13 +48,6 @@ public class Account {
     public void setTotalAmount(double totalAmount) {
         this.totalAmount = totalAmount;
     }
-
-    public Account(String libelle, String IBAN, Double amount) {
-        this.libelle = libelle;
-        this.IBAN = IBAN;
-        this.amount = amount;
-    }
-
 
     public Long getId() {
         return id;

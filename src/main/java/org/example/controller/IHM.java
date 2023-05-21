@@ -137,7 +137,7 @@ public class IHM {
         if (customers.isEmpty()) {
             System.out.println("No Customers Found.");
         } else {
-            System.out.println("### List of Users ###");
+            System.out.println("### List of Customers ###");
             for (Customer customer : customers) {
                 System.out.println("############");
                 System.out.println(customer.getId() + ". " + customer.getLastName()+", "+ customer.getFirstName()+", "+customer.getBirthDate());
@@ -172,10 +172,10 @@ public class IHM {
                     getAllAccounts();
                     break;
                 case "3":
-                    deleteAccount();
+                    getAccountByCustomerId();
                     break;
                 case "4":
-                    getAccountByCustomerId();
+                    deleteAccount();
                     break;
 //                case "5":
 //                    depositAction();
@@ -217,8 +217,10 @@ public class IHM {
         Double amount = scanner.nextDouble();
         System.out.println("Enter the id of the customer who will own this account : ");
         Long customerId = scanner.nextLong();
+        System.out.println("Enter the id of the bank of the owner's account :  ");
+        Long bankId = scanner.nextLong();
         Account account = new Account(libelle,IBAN,amount);
-        if(accountDAO.addAccount(account, customerId)){
+        if(accountDAO.addAccount(account, customerId, bankId)){
             System.out.println("Account successfully added !");
         }else {
             System.out.println("Error while trying to add an account ");
@@ -243,6 +245,8 @@ public class IHM {
     }
     // 3 - List of accounts by customer
     private void getAccountByCustomerId(){
+        System.out.println("List of accounts :");
+        getAllAccounts();
         System.out.println("Please enter the id of the account of a customer : ");
         Long accountId = scanner.nextLong();
         scanner.nextLine();
@@ -342,18 +346,20 @@ public class IHM {
 
     // 1 - Add a bank
     private void addBank() {
+        System.out.println("Enter the bank's name : ");
+        String bankName = scanner.nextLine();
         System.out.println("Enter the address of the bank :");
         String address = scanner.nextLine();
-        Bank bank = new Bank(address);
+        Bank bank = new Bank(bankName, address);
         if(bankDAO.addBank(bank)){
-            System.out.println("Customer successfully added !");
+            System.out.println("Bank successfully added !");
         }else {
-            System.out.println("Error while trying to add a customer ");
+            System.out.println("Error while trying to add a bank ");
         }
 
     }
 
-    // 2 - List of all accounts
+    // 2 - List of all banks
     private void getAllBanks() {
         System.out.println("List of all banks :");
         List<Bank> banks = bankDAO.getAllBanks();
@@ -363,7 +369,7 @@ public class IHM {
             System.out.println("### List of banks ###");
             for (Bank bank : banks) {
                 System.out.println("############");
-                System.out.println(bank.getId() + ". " + bank.getAddress());
+                System.out.println(bank.getId() + ". "+bank.getName()+", "+ bank.getAddress());
                 System.out.println("############");
             }
         }

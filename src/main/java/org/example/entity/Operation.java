@@ -15,6 +15,7 @@ public class Operation {
     @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "operation_account", joinColumns = @JoinColumn(name = "id_operation"), inverseJoinColumns = @JoinColumn(name = "id_account"))
     private List<Account> accounts;
+    @Column(name = "account_id")
     private int accountId;
 
     public Operation() {

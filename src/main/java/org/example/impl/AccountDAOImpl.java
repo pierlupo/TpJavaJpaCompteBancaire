@@ -2,6 +2,7 @@ package org.example.impl;
 
 import org.example.dao.AccountDAO;
 import org.example.entity.Account;
+import org.example.entity.Bank;
 import org.example.entity.Customer;
 import org.example.entity.Operation;
 
@@ -37,7 +38,7 @@ public class AccountDAOImpl implements AccountDAO {
             entityManager.close();
         }
     }
-    public boolean addAccount(Account account, Long customerId) {
+    public boolean addAccount(Account account, Long customerId, Long bankId) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         EntityTransaction transaction = entityManager.getTransaction();
         try {
@@ -45,11 +46,12 @@ public class AccountDAOImpl implements AccountDAO {
             Customer customer = entityManager.find(Customer.class,customerId);
             account.setCustomers(Collections.singletonList(customer));
             customer.getAccounts().add(account);
+            Bank bank = entityManager.find(Bank.class,bankId);
+            account.setBank(bank);
+            bank.getAccounts().add(account);
             entityManager.persist(account);
             transaction.commit();
             entityManager.close();
-            entityManager.persist(account);
-            transaction.commit();
             return true;
         }catch (Exception e){
             if(transaction.isActive()){
