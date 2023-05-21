@@ -6,6 +6,7 @@ import org.example.dao.CustomerDAO;
 import org.example.entity.Account;
 import org.example.entity.Bank;
 import org.example.entity.Customer;
+import org.example.entity.Operation;
 import org.example.impl.AccountDAOImpl;
 import org.example.impl.BankDAOImpl;
 import org.example.impl.CustomerDAOImpl;
@@ -14,6 +15,7 @@ import org.example.impl.OperationDAOImpl;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -133,7 +135,7 @@ public class IHM {
         System.out.println("List of all customers :");
         List<Customer> customers = customerDAO.getAllCustomers();
         if (customers.isEmpty()) {
-            System.out.println("No Todos Found.");
+            System.out.println("No Customers Found.");
         } else {
             System.out.println("### List of Users ###");
             for (Customer customer : customers) {
@@ -173,11 +175,18 @@ public class IHM {
                     deleteAccount();
                     break;
                 case "4":
+                    getAccountByCustomerId();
                     break;
+//                case "5":
+//                    depositAction();
+//                    break;
+//                case "6":
+//                    withdrawalAction();
+//                    break;
                 default:
                     System.out.println("Invalid choice");
             }
-        } while (!choice.equals("4"));
+        } while (!choice.equals("7"));
     }
 
     //  Sous Menu Account
@@ -190,8 +199,11 @@ public class IHM {
         System.out.println("***************************************");
         System.out.println("1 - Add an account");
         System.out.println("2 - List of all accounts");
-        System.out.println("3 - Delete an account");
-        System.out.println("4 - Go Back");
+        System.out.println("3 - List of accounts by customer");
+        System.out.println("4 - Delete an account");
+        System.out.println("5 - Make a deposit");
+        System.out.println("6 - Make a withdrawal");
+        System.out.println("7 - Go Back");
         System.out.println("***************************************");
     }
 
@@ -203,11 +215,13 @@ public class IHM {
         String IBAN = scanner.nextLine();
         System.out.println("Enter the amount : ");
         Double amount = scanner.nextDouble();
+        System.out.println("Enter the id of the customer who will own this account : ");
+        Long customerId = scanner.nextLong();
         Account account = new Account(libelle,IBAN,amount);
-        if(accountDAO.addAccount(account)){
-            System.out.println("Customer successfully added !");
+        if(accountDAO.addAccount(account, customerId)){
+            System.out.println("Account successfully added !");
         }else {
-            System.out.println("Error while trying to add a customer ");
+            System.out.println("Error while trying to add an account ");
         }
 
     }
@@ -227,8 +241,26 @@ public class IHM {
             }
         }
     }
+    // 3 - List of accounts by customer
+    private void getAccountByCustomerId(){
+        System.out.println("Please enter the id of the account of a customer : ");
+        Long accountId = scanner.nextLong();
+        scanner.nextLine();
+        List<Account> accounts = accountDAO.getAccountByCustomerId(accountId);
+        if (accounts.isEmpty()) {
+            System.out.println("No accounts Found.");
+        } else {
+            System.out.println("### List of Accounts of the customer chosen : ###");
+            for (Account account : accounts) {
+                System.out.println("############");
+                System.out.println(account.getId() + ". " + account.getIBAN()+", "+ account.getAmount());
+                System.out.println("############");
+            }
+        }
+    }
 
-    // 3 - Delete an account
+
+    // 4 - Delete an account
     private void deleteAccount() {
         System.out.println("List of accounts :");
         getAllAccounts();
@@ -241,6 +273,36 @@ public class IHM {
             System.out.println("Error while deleting account");
         }
     }
+
+//    private void depositAction() {
+//        Account account = getAccountByCustomerId();
+//        System.out.print("Please enter the amount of the deposit : ");
+//        double amount = scanner.nextDouble();
+//        scanner.nextLine();
+//        Operation operation = new Operation(amount, Math.toIntExact(account.getId()));
+//        try {
+//            if(account.makeDeposit(operation)) {
+//                System.out.println("Deposit Ok");
+//            }
+//        } catch (SQLException e) {
+//            System.out.println(e.getMessage());
+//        }
+//    }
+//
+//    private void withdrawalAction() {
+//        Account account = getAccountByCustomerId();
+//        System.out.print("Please enter the amount of the withdrawal : ");
+//        double amount = scanner.nextDouble();
+//        scanner.nextLine();
+//        Operation operation = new Operation(amount*-1, Math.toIntExact(account.getId()));
+//        try {
+//            if(account.makeWithDrawal(operation)) {
+//                System.out.println("Withdrawal Ok");
+//            }
+//        } catch (SQLException e) {
+//            System.out.println(e.getMessage());
+//        }
+//    }
     // Crud Bank
     private void bankMenu() {
         do {

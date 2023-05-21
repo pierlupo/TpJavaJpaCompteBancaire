@@ -21,9 +21,27 @@ public class Account {
     private Bank bank;
     @ManyToMany(mappedBy = "accounts")
     private List<Customer> customers;
+
     @ManyToMany(mappedBy = "accounts")
     private List<Operation> operations;
+    private double totalAmount;
     public Account() {
+    }
+
+    public List<Operation> getOperations() {
+        return operations;
+    }
+
+    public void setOperations(List<Operation> operations) {
+        this.operations = operations;
+    }
+
+    public double getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(double totalAmount) {
+        this.totalAmount = totalAmount;
     }
 
     public Account(String libelle, String IBAN, Double amount) {
